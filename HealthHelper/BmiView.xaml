@@ -1,0 +1,117 @@
+﻿<Window x:Class="HealthHelper.BmiView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthHelper"
+        mc:Ignorable="d"
+        Title="Bmi Opis" Height="500" Width="250" x:Name="BmiWindow" WindowStartupLocation="CenterScreen" MaxHeight="500" MaxWidth="250" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+     
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="3.1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+
+
+        </Grid.RowDefinitions>
+        <TextBlock  Grid.Row="0" Text="Opis" x:Name="wynikBMR" Foreground="Black" 
+                     FontSize="28" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                      TextAlignment="Center">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="yellow" />
+                    <GradientStop Color="Coral" Offset="1" />
+                    <GradientStop Color="Purple" Offset="1" />
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <TextBlock  Grid.Row="1" Text="U dorosłych interpretacja wyniku współczynnika BMI zależna jest od płci i aby stwierdzić, czy ma się niedowagę, nadwagę lub otyłość stosuje się poniższą klasyfikację"  TextWrapping="Wrap" x:Name="opis" Foreground="White"  
+                     FontSize="14" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                      >
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Purple" />
+                    <GradientStop Color="Coral" Offset="1" />
+                    
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <TextBlock  Grid.Row="2" Text="poniżej 18,5 – niedowaga"  TextWrapping="Wrap"  Foreground="White" 
+                     FontSize="14" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                      TextAlignment="Center">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Coral"  Offset="1"/>
+               
+                 
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <TextBlock  Grid.Row="3" Text="18,5–24,99 – wartość prawidłowa"  TextWrapping="Wrap"  Foreground="White" 
+                     FontSize="14" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                      TextAlignment="Center">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+               
+                    <GradientStop Color="Coral"  Offset="1" />
+                    
+                
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <TextBlock  Grid.Row="4" Text="25,0–29,99 – nadwaga"  TextWrapping="Wrap"  Foreground="White" 
+                     FontSize="14" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                      TextAlignment="Center">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Coral" Offset="1"  />
+                  
+                  
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <TextBlock  Grid.Row="5" Text="30,0–34,99 – otyłość I stopnia"  TextWrapping="Wrap"  Foreground="White" 
+                     FontSize="14" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                      TextAlignment="Center">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                   
+                    <GradientStop Color="Coral" Offset="1" />
+                 
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <TextBlock  Grid.Row="6" Text="35,0–39,99 – otyłość II stopnia"  TextWrapping="Wrap"  Foreground="White" 
+                     FontSize="14" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                      TextAlignment="Center">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Coral"   Offset="1"/>
+                
+                    
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <TextBlock  Grid.Row="7" Text="powyżej 40,0 – otyłość III stopnia (tzw. otyłość olbrzymia)"  TextWrapping="Wrap"  Foreground="White" 
+                     FontSize="14" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                      TextAlignment="Center">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    
+                    <GradientStop Color="Coral" />
+                    <GradientStop Color="purple"  Offset="1"/>
+                    
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+    </Grid>
+</Window>

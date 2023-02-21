@@ -1,0 +1,526 @@
+﻿<Window x:Class="HealthHelper.UserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:HealthHelper"
+        mc:Ignorable="d"
+        xmlns:local1="clr-namespace:HealthHelper.ViewModel"
+        xmlns:models="clr-namespace:HealthHelper.Models"
+        xmlns:converter="clr-namespace:HealthHelper.Converter"
+        Title="MainWindow" Height="800" Width="1366" x:Name="userWindow" WindowStartupLocation="CenterScreen" 
+        >
+    <Window.Resources>
+        <local1:UserPanelViewModel  x:Key="data"/>
+        <converter:EnumToBooleanConverter x:Key="EnumToBoolConverter" />
+        <converter:IntConverter x:Key="IntConverter"/>
+        <converter:DoubleConverter x:Key="DoubleConverter"/>
+
+        <!--ERROR TEMPLATE-->
+        <ControlTemplate x:Key="validationTemplate">
+            <StackPanel>
+                <Grid>
+                    <Rectangle  Fill="Pink" Stroke="Black" StrokeThickness="1"/>
+                    <TextBlock  Foreground="Red" FontSize="12" Text="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" />
+                </Grid>
+                <AdornedElementPlaceholder x:Name="placeholder"/>
+            </StackPanel>
+        </ControlTemplate>
+
+        <!--error message.-->
+        <Style x:Key="textBoxInError" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="BorderThickness"
+                            Value="0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+
+
+    </Window.Resources>
+    <Window.DataContext>
+        <local1:UserPanelViewModel/>
+    </Window.DataContext>
+    <Canvas Margin="0,0,0,-6" x:Name="overallCanvas" >
+        <Canvas x:Name="canvasTitle" Height="79" Width="460" HorizontalAlignment="Left" Canvas.Left="30" Canvas.Top="10" VerticalAlignment="Top">
+
+            <TextBlock VerticalAlignment="Top" Text="Health Helper "  Canvas.Right="10" Canvas.Left="75" TextWrapping="Wrap" Canvas.Top="10"  FontSize="48" FontFamily="Bahnschrift" FontWeight="Normal" Height="59" Width="299" HorizontalAlignment="Left">
+                <TextBlock.Style>
+                    <Style/>
+                </TextBlock.Style>
+                <TextBlock.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF08D4"/>
+                        <GradientStop Color="#FF05FFF9" Offset="1"/>
+                        <GradientStop Color="#FF0536FC" Offset="0.986"/>
+                    </LinearGradientBrush>
+                </TextBlock.Foreground>
+                <TextBlock.Effect>
+                    <DropShadowEffect
+                  ShadowDepth="5"
+                  Direction="0"
+                  Color="DarkViolet"
+                  Opacity="1"
+                 BlurRadius="8"/>
+                </TextBlock.Effect>
+            </TextBlock>
+
+            <Image Source="../../img/cardiogram.png" x:Name="healthImg" Height="60" Width="60"  Canvas.Left="388" Canvas.Top="10" >
+                <Image.Effect>
+                    <DropShadowEffect
+                  ShadowDepth="0"
+                  Direction="1"
+                  Color="DeepPink"
+                  Opacity="1"
+                 BlurRadius="20"/>
+                </Image.Effect>
+                <Image.Triggers>
+                    <EventTrigger RoutedEvent="Image.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="healthImg"
+                                Storyboard.TargetProperty="Opacity"
+                                From="1.0" To="0.1" Duration="0:0:1.5"
+                                AutoReverse="True" RepeatBehavior="Forever"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Image.Triggers>
+            </Image>
+
+        </Canvas>
+
+        <Canvas x:Name="dataCanvas" MinHeight="500" MinWidth="900" Width="772" Height="575" Canvas.Left="5" Canvas.Top="94" HorizontalAlignment="Left" VerticalAlignment="Center">
+
+            <Label Foreground="WhiteSmoke"  Content="Nazwa użytkownika" Canvas.Left="105" Canvas.Top="34" Height="30" Width="150" FontSize="15"  FontFamily="Bahnschrift" FontWeight="Normal" Opacity="0.8" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Label.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFB79FC8"/>
+                        <GradientStop Color="#FF099FFF" Offset="1"/>
+                        <GradientStop Color="#FF012034" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.Background>
+            </Label>
+            <TextBox 
+                Style="{StaticResource textBoxInError}"
+                Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                x:Name="nazwa" Foreground="WhiteSmoke" Canvas.Left="270" Canvas.Top="34" Height="30" Width="170" 
+                FontSize="15"  FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFB79FC8"/>
+                        <GradientStop Color="#FF099FFF" Offset="1"/>
+                        <GradientStop Color="#FF012034" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+
+                <TextBox.Text>
+                    <Binding  Path="UserName" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" >
+                        <Binding.ValidationRules>
+                            <!--DataErrorValidationRule checks for validation -->
+                            <DataErrorValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+
+            </TextBox>
+
+
+
+
+            <Label Foreground="WhiteSmoke"  Content="Wzrost [cm]" Canvas.Left="105" Canvas.Top="77" Height="30" Width="150" FontSize="15"  FontFamily="Bahnschrift" FontWeight="Normal" Opacity="0.8" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Label.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFB79FC8"/>
+                        <GradientStop Color="#FF099FFF" Offset="1"/>
+                        <GradientStop Color="#FF012034" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.Background>
+            </Label>
+            <TextBox 
+                Style="{StaticResource textBoxInError}"
+                Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                x:Name="wzrost" Foreground="WhiteSmoke" Canvas.Left="270" Canvas.Top="77" Height="30" Width="170" 
+                FontSize="15"  FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFB79FC8"/>
+                        <GradientStop Color="#FF099FFF" Offset="1"/>
+                        <GradientStop Color="#FF012034" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+
+
+                <TextBox.Text>
+                    <Binding  Path="Height" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" >
+                        <Binding.ValidationRules>
+                            <!--DataErrorValidationRule checks for validation -->
+                            <DataErrorValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+
+            </TextBox>
+
+
+
+
+
+            <Label Foreground="WhiteSmoke"  Content="Wiek" Canvas.Left="105" Canvas.Top="120" Height="30" Width="150" FontSize="15" FontFamily="Bahnschrift" FontWeight="Normal" Opacity="0.8" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Label.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFB79FC8"/>
+                        <GradientStop Color="#FF099FFF" Offset="1"/>
+                        <GradientStop Color="#FF012034" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.Background>
+            </Label>
+            <TextBox 
+                Style="{StaticResource textBoxInError}"
+                Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                x:Name="wiek" Foreground="WhiteSmoke" Canvas.Left="270" Canvas.Top="120" Height="30" Width="170" 
+                FontSize="15"  FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFB79FC8"/>
+                        <GradientStop Color="#FF099FFF" Offset="1"/>
+                        <GradientStop Color="#FF012034" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+
+                <TextBox.Text>
+                    <Binding  Path="YearsOld" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" >
+                        <Binding.ValidationRules>
+                            <!--DataErrorValidationRule checks for validation -->
+                            <DataErrorValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+
+
+
+            <Label Foreground="WhiteSmoke"  Content="Waga [kg]" Canvas.Left="105" Canvas.Top="163" Height="30" Width="150"
+                    FontSize="15"  FontFamily="Bahnschrift" FontWeight="Normal" Opacity="0.8" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Label.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFB79FC8"/>
+                        <GradientStop Color="#FF099FFF" Offset="1"/>
+                        <GradientStop Color="#FF012034" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.Background>
+
+            </Label>
+            <TextBox 
+                Style="{StaticResource textBoxInError}"
+                Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                x:Name="waga" Foreground="WhiteSmoke" Canvas.Left="270" Canvas.Top="163" Height="30" Width="170" 
+                FontSize="15"  FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8" HorizontalAlignment="Left" VerticalAlignment="Center">
+
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFB79FC8"/>
+                        <GradientStop Color="#FF099FFF" Offset="1"/>
+                        <GradientStop Color="#FF012034" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+
+                <TextBox.Text>
+                    <Binding  Path="Weight" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" >
+                        <Binding.ValidationRules>
+                            <!--DataErrorValidationRule checks for validation -->
+                            <DataErrorValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+
+
+            </TextBox>
+
+            <Button
+                Command="{Binding cmdEditUser}"
+                x:Name="cmdEditUser"
+                Background="MediumSpringGreen"  Canvas.Left="190" Canvas.Top="287" Height="60" Width="100" Foreground="Cyan" 
+                FontSize="20"   FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.6" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click">
+                <TextBlock Foreground="Black" Text="Zapisz zmiany" TextWrapping="Wrap" TextAlignment="Center"/>
+                <Button.LayoutTransform>
+                    <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                </Button.LayoutTransform>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.250" To="0" 
+                                                            Storyboard.TargetProperty="BorderThickness" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="65" 
+                                                            Storyboard.TargetProperty="Height" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="105" 
+                                                            Storyboard.TargetProperty="Width" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="22" 
+                                                            Storyboard.TargetProperty="FontSize" />
+                                            <ColorAnimation To="Purple" 
+                                                Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" 
+                                                FillBehavior="Stop" 
+                                                Duration="0:0:0.550"/>
+                                            <ColorAnimation To="MediumSpringGreen" 
+                                                Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" 
+                                                FillBehavior="Stop" 
+                                                Duration="0:0:0.550"/>
+
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.250" To="0" 
+                                                            Storyboard.TargetProperty="BorderThickness" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="60" 
+                                                            Storyboard.TargetProperty="Height" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="100" 
+                                                            Storyboard.TargetProperty="Width" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="20" 
+                                                            Storyboard.TargetProperty="FontSize" />
+                                            <ColorAnimation To="Cyan" 
+                                                Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" 
+                                                FillBehavior="Stop" 
+                                                Duration="0:0:0.550"/>
+                                            <ColorAnimation To="Pink" 
+                                                Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" 
+                                                FillBehavior="Stop" 
+                                                Duration="0:0:0.550"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+
+            <Canvas.Effect>
+                <DropShadowEffect
+                      ShadowDepth="1"
+                      Direction="0"
+                      Color="Violet"
+                      Opacity="1"
+                     BlurRadius="4"/>
+            </Canvas.Effect>
+        </Canvas>
+
+
+        <Canvas Height="420" Width="272" Canvas.Right="5" Canvas.Top="120" HorizontalAlignment="Left" Canvas.Left="1089" VerticalAlignment="Center" >
+            <Label Foreground="Black" Content="Wynik BMI" Canvas.Right="280" Canvas.Top="34" Height="38" Width="240"
+                   FontSize="24" FontFamily="Bahnschrift" FontWeight="Normal" Opacity="0.8"
+                   HorizontalAlignment="Center" VerticalAlignment="Top"
+                   >
+                <Label.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="yellow" />
+                        <GradientStop Color="Coral" Offset="1" />
+                        <GradientStop Color="#FF012034" Offset="1" />
+                    </LinearGradientBrush>
+                </Label.Background>
+            </Label>
+            <TextBlock 
+                TextWrapping="Wrap" Text="{Binding Path=WynikBMI, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" x:Name="wynikBMI" Foreground="Black" Canvas.Right="130" Canvas.Top="34" Height="38" Width="140"
+                     FontSize="28" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                     HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Center">
+                <TextBlock.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="yellow" />
+                        <GradientStop Color="Coral" Offset="1" />
+                        <GradientStop Color="#FF012034" Offset="1" />
+                    </LinearGradientBrush>
+                </TextBlock.Background>
+            </TextBlock>
+            <Button x:Name="descBMI" Content="Opis" Background="LightSteelBlue" Canvas.Right="20" Canvas.Top="34" BorderThickness="1"   Height="38" Width="100" Foreground="Black" 
+                    FontSize="24"  FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Click="Button_OnClick_BmiOpis">
+                <Button.LayoutTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.LayoutTransform>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.250" To="0" 
+                                                            Storyboard.TargetProperty="BorderThickness" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="40" 
+                                                            Storyboard.TargetProperty="Height" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="105" 
+                                                            Storyboard.TargetProperty="Width" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="26" 
+                                                            Storyboard.TargetProperty="FontSize" />
+                                            <ColorAnimation To="Purple" 
+                                                Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" 
+                                                FillBehavior="Stop" 
+                                                Duration="0:0:0.550"/>
+                                         
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.250" To="0" 
+                                                            Storyboard.TargetProperty="BorderThickness" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="38" 
+                                                            Storyboard.TargetProperty="Height" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="100" 
+                                                            Storyboard.TargetProperty="Width" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="24" 
+                                                            Storyboard.TargetProperty="FontSize" />
+                                            <ColorAnimation To="Black" 
+                                                Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" 
+                                                FillBehavior="Stop" 
+                                                Duration="0:0:0.550"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+
+            <Label Foreground="Black" Content="Wynik BMR" Canvas.Right="280" Canvas.Top="120" Height="38" Width="240"
+                   FontSize="24" FontFamily="Bahnschrift" FontWeight="Normal" Opacity="0.8"
+                   HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Label.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="yellow" />
+                        <GradientStop Color="Coral" Offset="1" />
+                        <GradientStop Color="#FF012034" Offset="1" />
+                    </LinearGradientBrush>
+                </Label.Background>
+            </Label>
+            <TextBlock  Text="{Binding Path=WynikBMR, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" x:Name="wynikBMR" Foreground="Black" Canvas.Right="130" Canvas.Top="120" Height="38" Width="140"
+                     FontSize="28" FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8"
+                     HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Center">
+                <TextBlock.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="yellow" />
+                        <GradientStop Color="Coral" Offset="1" />
+                        <GradientStop Color="#FF012034" Offset="1" />
+                    </LinearGradientBrush>
+                </TextBlock.Background>
+            </TextBlock>
+            <Button x:Name="descBMR" Content="Opis" Background="LightSteelBlue" Canvas.Right="20" Canvas.Top="120" BorderThickness="1"   Height="38" Width="100" Foreground="Black" 
+                    FontSize="24"  FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.8" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Click="Button_OnClick_BmrOpis">
+                <Button.LayoutTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.LayoutTransform>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.250" To="0" 
+                                                            Storyboard.TargetProperty="BorderThickness" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="40" 
+                                                            Storyboard.TargetProperty="Height" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="105" 
+                                                            Storyboard.TargetProperty="Width" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="26" 
+                                                            Storyboard.TargetProperty="FontSize" />
+                                            <ColorAnimation To="Purple" 
+                                                Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" 
+                                                FillBehavior="Stop" 
+                                                Duration="0:0:0.550"/>
+
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.250" To="0" 
+                                                            Storyboard.TargetProperty="BorderThickness" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="38" 
+                                                            Storyboard.TargetProperty="Height" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="100" 
+                                                            Storyboard.TargetProperty="Width" />
+                                            <DoubleAnimation Duration="0:0:0.550" To="24" 
+                                                            Storyboard.TargetProperty="FontSize" />
+                                            <ColorAnimation To="Black" 
+                                                Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" 
+                                                FillBehavior="Stop" 
+                                                Duration="0:0:0.550"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+            </Button>
+
+
+            <Grid Canvas.Left="30" Canvas.Top="440">
+                <Polygon Stretch="Fill"  Fill="Goldenrod" Points="0,0 0,-30 0,-10 -30,-10 -30,10 -45,-10 -30,-30 -30,-20 -0,-20 -0,-0 -30,0 -30,-10 0,-10">
+                    <Polygon.Effect>
+                        <DropShadowEffect
+                          
+                              ShadowDepth="2"
+                              Direction="120"
+                              Color="Red"
+                              Opacity="1"
+                              BlurRadius="5"
+                        />
+                    </Polygon.Effect>
+                </Polygon>
+                <TextBlock Text="Cofnij" 
+                  Margin="50 5 10 10 "
+                  FontSize="24"
+                  FontWeight="Medium"
+                  Height="30"
+                  Width="70"
+                  Opacity="0.9"
+                  Foreground="Red"  HorizontalAlignment="Left" VerticalAlignment="Center">
+                    
+                </TextBlock>
+                <Button Background="Transparent" BorderThickness="0" BorderBrush="Transparent"  Height="45" Width="100" Foreground="Cyan" 
+                FontSize="24"  FontFamily="Bahnschrift" FontWeight="Medium" Opacity="0.1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                Click="Button_OnClick">
+                    <Button.LayoutTransform>
+                        <ScaleTransform ScaleX="2" ScaleY="2"/>
+
+                    </Button.LayoutTransform>
+              
+
+
+
+                </Button>
+        
+            </Grid>
+
+
+        </Canvas>
+
+
+
+
+
+
+    </Canvas>
+</Window>
